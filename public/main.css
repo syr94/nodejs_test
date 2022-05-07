@@ -1,0 +1,30 @@
+/*
+    стиль для класса headers_pokemon
+*/
+.page_content {
+    display: flex;
+    justify-content: center;
+    margin: 100px;
+}
+
+.carousel_container {
+    width: 800;
+    height: 600;
+}
+
+.my_site_header {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    text-shadow: 1px 1px 5px black, 0 0 1em black;
+    color: silver;
+}
+
+
+/*
+    стиль для Id red-color
+*/
+
+#red-color {
+    background-color: red;
+}
