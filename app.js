@@ -3,6 +3,64 @@ const app = express();
 const userController = require("./controllers/userController.js");
 const homeController = require("./controllers/homeController.js");
 const path = require('path');
+const pg = require('pg');
+
+const config = {
+    host: 'john.db.elephantsql.com',
+    // Do not hard code your username and password.
+    // Consider using Node environment variables.
+    user: 'unsjmswb',     
+    password: 'Myo0dN8PiMa5P-kYiKZ53bAhYYvlH5Lm',
+    database: 'unsjmswb',
+    port: 5432,
+    ssl: true
+};
+
+const client = new pg.Client(config);
+
+client.connect(err => {
+    if (err) throw err;
+    else {
+ //       queryDatabase();
+        const query = `SELECT * FROM users WHERE user_id = '1'`;
+        client.query(query)
+        .then(res => {
+            const rows = res.rows;
+
+            rows.map(row => {
+                console.log(`Read: ${JSON.stringify(row)}`);
+            });
+
+            process.exit();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+});
+
+function queryDatabase() {
+    const query = `
+        DROP TABLE IF EXISTS inventory;
+        CREATE TABLE inventory (id serial PRIMARY KEY, name VARCHAR(50), quantity INTEGER);
+        INSERT INTO inventory (name, quantity) VALUES ('banana', 150);
+        INSERT INTO inventory (name, quantity) VALUES ('orange', 154);
+        INSERT INTO inventory (name, quantity) VALUES ('apple', 100);
+    `;
+
+    client
+        .query(query)
+        .then(() => {
+            console.log('Table created successfully!');
+            client.end(console.log('Closed client connection'));
+        })
+        .catch(err => console.log(err))
+        .then(() => {
+            console.log('Finished execution, exiting now');
+            process.exit();
+        });
+}
+
 
 const urlencodedParser = express.urlencoded({extended: false});
 
